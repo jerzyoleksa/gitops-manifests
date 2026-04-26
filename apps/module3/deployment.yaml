@@ -33,6 +33,7 @@ spec:
       containers:
         - name: module3
           image: ghcr.io/jerzyoleksa/bootroot:main
+          imagePullPolicy: Always
 
           ports:
             - name: http
