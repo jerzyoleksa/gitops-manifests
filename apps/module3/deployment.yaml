@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: module3
-          image: ghcr.io/jerzyoleksa/bootroot:latest
+          image: ghcr.io/jerzyoleksa/bootroot:main
           ports:
             - containerPort: 8080
           resources:
