@@ -3,21 +3,21 @@ kind: Application
 metadata:
   name: module3
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
+
   source:
-    repoURL: https://github.com/jerzyoleksa/bootroot.git
+    repoURL: https://github.com/jerzyoleksa/gitops-manifests.git
     targetRevision: main
     path: apps/module3
+
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: module3
+
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - RespectIgnoreDifferences=true
