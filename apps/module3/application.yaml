@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/jerzyoleksa/bootroot.git   # ← ZMIEŃ NA SWÓJ REPO
+    repoURL: https://github.com/jerzyoleksa/bootroot.git
     targetRevision: main
     path: apps/module3
   destination:

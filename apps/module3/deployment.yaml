@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: module3
-          image: mojacr.azurecr.io/module3:latest   # ← ZMIEŃ NA SWÓJ OBRAZ
+          image: ghcr.io/jerzyoleksa/bootroot:latest
           ports:
             - containerPort: 8080
           resources:
