@@ -2,31 +2,72 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: module3
-  namespace: default
+  namespace: module3
   labels:
     app: module3
+    app.kubernetes.io/name: module3
+    app.kubernetes.io/part-of: bootroot
+
 spec:
   replicas: 2
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+
   selector:
     matchLabels:
       app: module3
+
   template:
     metadata:
       labels:
         app: module3
+        app.kubernetes.io/name: module3
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+
     spec:
       containers:
         - name: module3
           image: ghcr.io/jerzyoleksa/bootroot:main
+
           ports:
-            - containerPort: 8080
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+
           resources:
             requests:
-              cpu: 100m
-              memory: 256Mi
+              cpu: 150m
+              memory: 300Mi
             limits:
-              cpu: 500m
-              memory: 512Mi
-          # env:
-          # - name: SPRING_PROFILES_ACTIVE
-          #   value: "prod"
+              cpu: 600m
+              memory: 600Mi
+
+          # Health checks - bardzo ważne dla Argo CD
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
