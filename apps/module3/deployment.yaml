@@ -10,7 +10,6 @@ metadata:
 
 spec:
   replicas: 2
-
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -48,7 +47,22 @@ spec:
               cpu: 600m
               memory: 600Mi
 
-          # Health checks - bardzo ważne dla Argo CD
+          # ====================== KAFKA CONFIG ======================
+          env:
+            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+              value: "my-kafka-kafka-bootstrap.kafka.svc.cluster.local:9092"
+
+            - name: SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET
+              value: "earliest"
+
+            - name: SPRING_KAFKA_CONSUMER_GROUP_ID
+              value: "module3-group"
+
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+          # =========================================================
+
+          # Health checks
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
